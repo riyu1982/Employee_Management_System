@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Management System</title>
+
+<style>
+body{
+    font-family: Arial;
+    background: #f4f4f4;
+    text-align: center;
+    padding: 100px;
+}
+input{
+    font-weight: bold;
+}
+input{
+color:black;
+    
+}
+
+.container{
+    width: 500px;
+    margin: auto;
+    background: orange;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 25px black;
+}
+
+input{
+    width: 90%;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+button{
+    padding: 8px 12px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    background: #1E90FF;
+    color: white;
+    border-radius: 5px;
+}
+
+table{
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th, td{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th{
+    background: #3B82F6;
+    color: white;
+}
+
+.delete-btn{
+    background: red;
+    color: black;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <u><h2>Employee Management System</h2></u>
+
+    <input type="text" id="name" placeholder="Employee Name">
+    <input type="text" id="empId" placeholder="Employee ID">
+    <input type="text" id="dept" placeholder="Department">
+    <input type="number" id="salary" placeholder="Salary">
+
+    <button onclick="addEmployee()">Add Employee</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="empTable"></tbody>
+    </table>
+</div>
+
+<script>
+let employees = [];
+
+function addEmployee(){
+    let name = document.getElementById("name").value.trim();
+    let empId = document.getElementById("empId").value.trim();
+    let dept = document.getElementById("dept").value.trim();
+    let salary = document.getElementById("salary").value.trim();
+
+    // Validation
+    if(name === "" || empId === "" || dept === "" || salary === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    employees.push({
+        name: name,
+        empId: empId,
+        dept: dept,
+        salary: salary
+    });
+
+    clearInputs();
+    renderTable();
+}
+
+function deleteEmployee(index){
+    employees.splice(index, 1);
+    renderTable();
+}
+
+function renderTable(){
+    let table = document.getElementById("empTable");
+    table.innerHTML = "";
+
+    employees.forEach((emp, index) => {
+        table.innerHTML += `
+            <tr>
+                <td>${emp.empId}</td>
+                <td>${emp.name}</td>
+                <td>${emp.dept}</td>
+                <td>${emp.salary}</td>
+                <td><button class="delete-btn" onclick="deleteEmployee(${index})">Delete</button></td>
+            </tr>
+        `;
+    });
+}
+
+function clearInputs(){
+    document.getElementById("name").value = "";
+    document.getElementById("empId").value = "";
+    document.getElementById("dept").value = "";
+    document.getElementById("salary").value = "";
+}
+</script>
+
+</body>
+</html>
