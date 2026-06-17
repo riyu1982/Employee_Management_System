@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library Management System</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.container{
+    width: 600px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px gray;
+}
+
+input{
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button{
+    padding: 10px 15px;
+    background-color: #1E90FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: #0d6efd;
+}
+
+table{
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th, td{
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+th{
+    background-color: #1E90FF;
+    color: white;
+}
+
+.delete-btn{
+    background-color: red;
+}
+
+.total-books{
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Library Management System</h2>
+
+    <input type="text" id="bookName" placeholder="Book Name">
+    <input type="text" id="authorName" placeholder="Author Name">
+    <input type="text" id="category" placeholder="Category">
+
+    <br><br>
+
+    <button onclick="addBook()">Add Book</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="bookTable">
+        </tbody>
+    </table>
+
+    <div class="total-books">
+        Total Books: <span id="totalBooks">0</span>
+    </div>
+
+</div>
+
+<script>
+
+let books = [];
+
+function addBook(){
+
+    let bookName = document.getElementById("bookName").value.trim();
+    let authorName = document.getElementById("authorName").value.trim();
+    let category = document.getElementById("category").value.trim();
+
+    if(bookName === "" || authorName === "" || category === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    books.push({
+        bookName,
+        authorName,
+        category
+    });
+
+    document.getElementById("bookName").value = "";
+    document.getElementById("authorName").value = "";
+    document.getElementById("category").value = "";
+
+    displayBooks();
+}
+
+function deleteBook(index){
+    books.splice(index,1);
+    displayBooks();
+}
+
+function displayBooks(){
+
+    let table = document.getElementById("bookTable");
+    table.innerHTML = "";
+
+    books.forEach((book,index)=>{
+
+        table.innerHTML += `
+        <tr>
+            <td>${book.bookName}</td>
+            <td>${book.authorName}</td>
+            <td>${book.category}</td>
+            <td>
+                <button class="delete-btn"
+                onclick="deleteBook(${index})">
+                Delete
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("totalBooks").innerText = books.length;
+}
+
+</script>
+
+</body>
+</html>
