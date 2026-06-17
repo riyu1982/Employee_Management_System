@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker</title>
+
+<style>
+body{
+    font-family: Arial;
+    background: #f4f4f4;
+    text-align: center;
+}
+
+.container{
+    width: 450px;
+    margin: auto;
+    background: #00FF00;;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px black;
+}
+
+input{
+    width: 90%;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+button{
+    padding: 8px 12px;
+    background:  rgb(255, 0, 0);
+    color: black;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+table{
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th, td{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th{
+    background:  rgb(255, 0, 0);
+    color: black;
+}
+
+.delete-btn{
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.summary{
+    margin-top: 15px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <u><h2>Expense Tracker</h2></u>
+
+    <input type="text" id="expenseName" placeholder="Expense Name">
+    <input type="number" id="expenseAmount" placeholder="Amount">
+
+    <button onclick="addExpense()">Add Expense</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="expenseTable"></tbody>
+    </table>
+
+    <div class="summary">
+        <p>Total Expenses: <span id="total">0</span></p>
+        <p>Number of Expenses: <span id="count">0</span></p>
+    </div>
+</div>
+
+<script>
+let expenses = [];
+
+function addExpense(){
+    let name = document.getElementById("expenseName").value.trim();
+    let amount = document.getElementById("expenseAmount").value.trim();
+
+    if(name === "" || amount === ""){
+        alert("Please enter all fields");
+        return;
+    }
+
+    expenses.push({
+        name: name,
+        amount: parseFloat(amount)
+    });
+
+    document.getElementById("expenseName").value = "";
+    document.getElementById("expenseAmount").value = "";
+
+    renderTable();
+}
+
+function deleteExpense(index){
+    expenses.splice(index, 1);
+    renderTable();
+}
+
+function renderTable(){
+    let table = document.getElementById("expenseTable");
+    table.innerHTML = "";
+
+    let total = 0;
+
+    expenses.forEach((exp, index) => {
+        total += exp.amount;
+
+        table.innerHTML += `
+            <tr>
+                <td>${exp.name}</td>
+                <td>${exp.amount}</td>
+                <td><button class="delete-btn" onclick="deleteExpense(${index})">Delete</button></td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("total").innerText = total;
+    document.getElementById("count").innerText = expenses.length;
+}
+</script>
+
+</body>
+</html>
